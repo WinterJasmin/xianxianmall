@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>登录</title>
+<style th:inline="css">
+.image {
+	position: absolute;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+}
+
+.middle {
+	position: absolute;
+	z-index: 2;
+	margin-left: 100px;
+	margin-top: 100px;
+}
+
+input {
+	width: 300px;
+	height: 50px;
+	margin-bottom: 10px;
+	padding-left: 5px;
+	font-size: 16px;
+	/* 去除input边框及阴影 */
+	outline-color: invert;
+	outline-style: none;
+	outline-width: 0px;
+	border: none;
+	border-style: none;
+	text-shadow: none;
+	/*-webkit-appearance: none;*/
+	-webkit-user-select: text;
+	outline-color: transparent;
+	box-shadow: none;
+}
+a {
+    text-decoration: none;
+}
+
+a:link {
+    color: black;
+}
+
+a:hover {
+    color: black;
+	text-decoration: underline;
+}
+
+.error{
+	color:red;
+}
+
+tr {
+	width:310px;
+}
+</style>
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    $.validator.setDefaults({
+			submitHandler: function() {
+				form.submit();
+			}
+		});
+    $().ready(function() {
+			var validator = $("#form").validate({
+				rules: {
+					nickname: {
+						required: true,
+						minlength: 1,
+						maxlength: 8
+					},
+					password: {
+						required: true,
+						minlength: 1,
+						maxlength: 8
+					}
+				},
+				messages: {
+					nickname: {
+						required: "（必需字段）",
+						minlength: "（不能少于1个字符且不能多于8个字符）",
+						maxlength: "（不能少于1个字符且不能多于8个字符）"
+					},
+					password: {
+						required: "（必需字段）",
+						minlength: "（不能少于1个字符且不能多于8个字符）",
+						maxlength: "（不能少于1个字符且不能多于8个字符）"
+					}
+				}
+			});
+
+			/*$(".cancel").click(function() {
+				validator.resetForm();
+			});*/
+		})
+
+    window.onload = function(){
+        var oForm = document.forms[0];
+        var oUser = document.getElementById('nickname');
+        var oPswd = document.getElementById('password');
+        var oRemember = document.getElementById('remember');
+        //页面初始化时，如果帐号密码cookie存在则填充
+        if(getCookie('nickname') && getCookie('password')){
+            oUser.value = getCookie('nickname');
+            oPswd.value = getCookie('password');
+            oRemember.checked = true;
+        }
+        //复选框勾选状态发生改变时，如果未勾选则清除cookie
+        oRemember.onchange = function(){
+            if(!this.checked){
+                delCookie('nickname');
+                delCookie('password');
+            }
+        };
+        //表单提交事件触发时，如果复选框是勾选状态则保存cookie
+        oForm.onsubmit = function(){
+            if(remember.checked){
+                setCookie('nickname',oUser.value,7); //保存帐号到cookie，有效期7天
+                setCookie('password',oPswd.value,7); //保存密码到cookie，有效期7天
+            }
+        };
+    };
+    //设置cookie
+    function setCookie(name,value,day){
+        var date = new Date();
+        date.setDate(date.getDate() + day);
+        document.cookie = name + '=' + value + ';expires='+ date;
+    };
+    //获取cookie
+    function getCookie(name){
+        var reg = RegExp(name+'=([^;]+)');
+        var arr = document.cookie.match(reg);
+        if(arr){
+            return arr[1];
+        }else{
+            return '';
+        }
+    };
+    //删除cookie
+    function delCookie(name){
+        setCookie(name,null,-1);
+    };
+</script>
+</head>
+<body style="margin: 0 auto;">
+	<img class="image" src="images/loginbackground.jpg"
+		th:src="@{/images/loginbackground.jpg}" />
+	<div style="height: 100px;position:relative;z-index:4">
+		<div style="float: left;padding-left: 200px;padding-top: 30px;">
+			<span
+				style="font-family: STXingkai;font-size: 60px;margin-right: 50px;">纤纤</span>
+		</div>
+	</div>
+	<div class="middle">
+		<form id="form" action="/xianxianmall/user/login" method="get" style="width: 310px;">
+			<table>
+				<tr>
+					<td colspan="2">
+						<p style="color: red;" th:text="${session.message}"></p>
+					</td>
+				</tr>
+				<tr>
+					<td><input type="text" name="nickname" id="nickname" placeholder="用户名">
+					</td>
+				</tr>
+				<tr>
+					<td><input type="password" id="password" name="password" placeholder="密&nbsp;&nbsp;&nbsp;&nbsp;码"></td>
+				</tr>
+				<tr>
+					<td style="float: right;">
+						<input type="checkbox" id="remember" name="remember" value="" style="width:15px;height:15px;float: left;">
+						<label for="remember">记住密码</label>
+					</td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="登&nbsp;&nbsp;录" style="background-color: #64845F;margin-bottom: 0px;"></td>
+				</tr>
+				<tr>
+					<td>
+						<span style="float: left;font-size:14px;"><a href="register.html">立即注册</a></span>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>查看已注册用户</title>
+<style th:inline="css">
+.listtable tbody {
+    display: block;
+    height: 450px;
+    overflow-y: scroll;
+}
+
+.listtable thead, .listtable tbody tr {
+    display: table;
+    table-layout: fixed;
+    text-align: center;
+}
+
+</style>
+</head>
+<body>
+<!-- 搜索框 -->
+<div style="height:80px;margin-top:10px;">
+    <form action="../user/findByNickname" method="get">
+        <table style="margin:auto;">
+            <tr>
+                <td style="font-size: 18px;">搜索：</td>
+                <td>
+                    <input type="text" id="nickname" name="nickname" style="width:150px;height:30px;" placeholder="输入昵称搜索">
+                </td>
+                <td>
+                    <input type="submit" value="搜&nbsp;&nbsp;索" style="height:36px;width:61px;font-size:16px;">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<!-- 用户列表 -->
+<div>
+    <table class="listtable" style="margin:auto;text-align:center;" border="1" cellspacing="0">
+        <thead>
+	        <tr>
+	            <th style="width:200px;">编号</th>
+	            <th style="width:200px;">昵称</th>
+                <th style="width:200px;">性别</th>
+                <th style="width:200px;">真实姓名</th>
+                <th style="width:200px;">手机</th>
+	            <th style="width:200px;">地址</th>
+	        </tr>
+        </thead>
+        <tbody id="tbody">
+	        <tr th:each="user : ${session.userlist}" style="height: 87px;">
+	            <td th:text="${user.uid}" style="width:200px;"></td>
+	            <td th:text="${user.nickname}" style="width:200px;"></td>
+	            <td th:text="${user.sex}? '男' : '女'" style="width:200px;"></td>
+	            <td th:text="${user.username}" style="width:200px;"></td>
+                <td th:text="${user.phone}" style="width:200px;"></td>
+                <td th:text="${user.address}" style="width:200px;"></td>
+	        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

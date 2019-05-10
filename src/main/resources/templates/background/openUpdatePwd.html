@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>更新个人信息页面</title>
+    <style th:inline="css">
+        .middle {
+            margin-left: 100px;
+        }
+
+        input {
+            /* width:300px; */
+            height:50px;
+            margin-bottom: 10px;
+            padding-left: 5px;
+            font-size:16px;
+            /* 去除input边框及阴影 */
+            outline-color: invert ;
+            outline-style: none ;
+            outline-width: 0px ;
+            border: none ;
+            border-style: none ;
+            text-shadow: none ;
+            /*-webkit-appearance: none ;*/
+            -webkit-user-select: text ;
+            outline-color: transparent ;
+            box-shadow: none;
+
+            border:1px solid #5F87AD;;
+        }
+
+        label {
+            width:100px;
+        }
+
+        .error{
+            color:red;
+        }
+
+    </style>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+    <script type="text/javascript">
+        $.validator.setDefaults({
+            submitHandler: function() {
+                form.submit();
+            }
+        });
+        $().ready(function() {
+            var validator = $("#form").validate({
+                rules:{
+                    password:{
+                        required:true,
+                        minlength:1,
+                        maxlength:8
+                    },
+                    ensure:{
+                        required:true,
+                        minlength:1,
+                        maxlength:8,
+                        equalTo:"#password"
+                    }
+                },
+                messages:{
+                    password:{
+                        required:"（必需字段）",
+                        minlength:"（不能少于1个字符且不能多于8个字符）",
+                        maxlength:"（不能少于1个字符且不能多于8个字符）"
+                    },
+                    ensure:{
+                        required:"（必需字段）",
+                        minlength:"（不能少于1个字符且不能多于8个字符）",
+                        maxlength:"（不能少于1个字符且不能多于8个字符）",
+                        equalTo:"密码不一致"
+                    }
+                }
+            });
+
+            $(".cancel").click(function() {
+                validator.resetForm();
+            });
+        });
+
+    </script>
+</head>
+<body style="margin: 0 auto;">
+<center>
+    <div class="middle">
+        <form id="form" action="../admin/updatePwd" method="post">
+            <table>
+                <tr>
+                    <td>
+                        <label for="password">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</label>
+                    </td>
+                    <td>
+                        <input type="password" name="password" id="password" th:value="${session.LOGIN_ADMIN.pwd}" placeholder="不能超过8个字符">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="ensure">确认密码</label>
+                    </td>
+                    <td>
+                        <input type="password" name="ensure" id="ensure" placeholder="确认密码">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="提&nbsp;&nbsp;交" style="background-color:#5F87AD;width:150px;float:left;">
+                    </td>
+                    <td>
+                        <input type="reset" value="重&nbsp;&nbsp;置" style="background-color:#5F87AD;width:150px;float:left;margin-left:50px">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</center>
+</body>
+</html>

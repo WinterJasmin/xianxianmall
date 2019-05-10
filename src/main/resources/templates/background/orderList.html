@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>查看所有订单</title>
+<style th:inline="css">
+.listtable tbody {
+	display: block;
+	height: 450px;
+	overflow-y: scroll;
+}
+
+.listtable thead, .listtable tbody tr {
+	display: table;
+	table-layout: fixed;
+	text-align: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:link {
+    color:black;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+</style>
+</head>
+<body>
+	<!-- 搜索框 -->
+	<div style="height:80px;margin-top:10px;">
+		<form action="../order/findOrderByRid">
+			<table style="margin:auto;">
+				<tr>
+					<td>搜索：</td>
+					<td><input type="text" name="rid" width="150px" placeholder="请输入订单id查询">
+					</td>
+					<td><input type="submit" value="搜&nbsp;&nbsp;索"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+
+	<!-- 列表 -->
+	<div>
+		<table class="listtable" style="margin:auto;text-align:center;"
+			border="1" cellspacing="0">
+			<thead>
+				<tr>
+					<th style="width:100px;">订单编号</th>
+					<th style="width:100px;">订单详情编号</th>
+					<th style="width:100px;">用户id</th>
+					<th style="width:100px;">状态</th>
+					<th style="width:200px;">订单日期</th>
+				</tr>
+			</thead>
+			<tbody>
+                <tr th:each="order : ${session.orderTableList}">
+                    <td th:text="${order.rid}" style="width:100px;"></td>
+                    <td th:text="${order.oid}" style="width:100px;"></td>
+                    <td th:text="${order.uid}" style="width:100px;"></td>
+                    <td th:text="${order.rstate}? '已发货' : '未发货'" style="width:100px;"></td>
+                    <td th:text="${#dates.format(order.date, 'yyyy-MM-dd HH:mm:ss')}" style="width:200px;"></td>
+                </tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>注册</title>
+<style th:inline="css">
+.middle {
+    margin-left: 100px;
+    margin-top: 100px;
+}
+
+input {
+    /* width:300px; */
+    height:50px;
+    margin-bottom: 10px;
+    padding-left: 5px;
+    font-size:16px;
+    /* 去除input边框及阴影 */
+    outline-color: invert ;
+    outline-style: none ;
+    outline-width: 0px ;
+    border: none ;
+    border-style: none ;
+    text-shadow: none ;
+   /* -webkit-appearance: none ;*/
+    -webkit-user-select: text ;
+    outline-color: transparent ;
+    box-shadow: none;
+    
+    border:1px solid #64845F;
+}
+
+label {
+    width:100px;
+}
+
+.error{
+    color:red;
+}
+
+</style>
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<script type="text/javascript">
+$.validator.setDefaults({
+    submitHandler: function() {
+      form.submit();
+    }
+});
+$().ready(function() {
+    var validator = $("#form").validate({
+        rules:{
+            nickname:{
+                required:true,
+                minlength:1,
+                maxlength:8                
+            },
+            password:{
+                required:true,
+                minlength:1,
+                maxlength:8                
+            },
+            ensure:{
+                required:true,
+                minlength:1,
+                maxlength:8,
+                equalTo:"#password"                
+            },
+            username:"required",
+            phone:{
+                required:true,
+                maxlength:11,
+                digits:true             
+            },
+            uaddress:"required"
+        },
+        messages:{
+            nickname:{
+                required:"（必需字段）",
+                minlength:"（不能少于1个字符且不能多于8个字符）",
+                maxlength:"（不能少于1个字符且不能多于8个字符）"               
+            },
+            password:{
+                required:"（必需字段）",
+                minlength:"（不能少于1个字符且不能多于8个字符）",
+                maxlength:"（不能少于1个字符且不能多于8个字符）"                 
+            },
+            ensure:{
+                required:"（必需字段）",
+                minlength:"（不能少于1个字符且不能多于8个字符）",
+                maxlength:"（不能少于1个字符且不能多于8个字符）",
+                equalTo:"密码不一致"                
+            },
+            username:{
+                required:"（必需字段）"
+            },
+            phone:{
+                required:"（必需字段）",
+                maxlength:"（必须为11个数字）",
+                minlength:"（必须为11个数字）",
+                digits:"（必须为整数）"             
+            },
+            uaddress:{
+                required:"（必需字段）"
+            }
+        }
+    });
+    
+    $(".cancel").click(function() {
+        validator.resetForm();
+    });
+});
+
+</script>
+</head>
+<body style="margin: 0 auto;">
+    <div style="height: 100px;position:relative;z-index:4">
+        <div style="float: left;padding-left: 200px;padding-top: 30px;">
+            <span
+                style="font-family: STXingkai;font-size: 60px;margin-right: 50px;">纤纤</span>
+        </div>
+    </div>
+    <center>
+    <div class="middle">
+        <form id="form" action="user/reg" method="post">
+            <table>
+                <tr>
+                    <td>
+                        <label for="nickname">用&nbsp;户&nbsp;名</label>
+                    </td>
+                    <td>
+                       <input type="text" name="nickname" id="nickname" placeholder="不能超过8个字符">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="password">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</label>
+                    </td>
+                    <td>
+                        <input type="password" name="password" id="password" placeholder="不能超过8个字符">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="ensure">确认密码</label>
+                    </td>
+                    <td>
+                        <input type="password" name="ensure" id="ensure" placeholder="确认密码">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="username">真实姓名</label>
+                    </td>
+                    <td>
+                        <input type="text" name="username" id="username" placeholder="真实姓名">
+                    </td>
+                </tr>
+                <tr style="height:40px;">
+                    <td>
+                        <label>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</label>
+                    </td>
+                    <td>
+                        <input type="radio" name="sex" value="1" style="height:20px;">男&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="sex" value="0" style="height:20px;"checked>女
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="phone">手&nbsp;机&nbsp;号</label>
+                    </td>
+                    <td>
+                        <input type="text" name="phone" id="phone" placeholder="手机号">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="uaddress">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址</label>
+                    </td>
+                    <td>
+                        <input type="text" name="uaddress" id="uaddress" placeholder="地址" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="注&nbsp;&nbsp;册" style="background-color: #64845F;width:150px;float:left;">
+                    </td>
+                    <td>
+                        <input type="reset" value="重&nbsp;&nbsp;置" style="background-color: #64845F;width:150px;float:left;margin-left:50px">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    </center>
+</body>
+</html>

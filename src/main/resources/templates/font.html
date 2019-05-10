@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>纤纤汉服商城</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.0/css/swiper.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.0/css/swiper.min.css">
+
+    <style th:inline="css">
+        /* 顶部 */
+        .spanstyle {
+            padding-right: 30px;
+        }
+
+        /* 头部导航栏 */
+        .container {
+            width: 350px;
+            height: 50px;
+            /*margin: 100px auto;*/
+        }
+
+        .parent {
+            width: 100%;
+            height: 42px;
+            /* top: 4px;*/
+            /*position: relative;*/
+        }
+
+        .parent>input:first-of-type {
+            /*输入框高度设置为40px, border占据2px，总高度为42px*/
+            width: 200px;
+            height: 40px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .parent>input:first-of-type:focus {
+            border: 1px solid #64845F;
+            padding-left: 10px;
+        }
+
+        .parent>input:last-of-type {
+            /*button按钮border并不占据外围大小，设置高度42px*/
+            width: 100px;
+            height: 44px;
+            position: absolute;
+            background: #64845F;
+            border: 1px solid #64845F;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+        }
+
+        /* 轮播图 */
+        .swiper-container {
+            width: 800px;
+            height: 420px;
+            float: left;
+        }
+        .swiper-slide{
+            width: 1000px;
+            /*height: 300px;*/
+        }
+        .swiper-slide img{
+            width: 100%;
+            /*height: 100%;*/
+        }
+
+        .swiper-button-prev,.swiper-button-next {
+            color: #64845F;
+        }
+
+        .rightnav {
+            font-size: 18px;
+            color: white;
+            height: 50px;
+            padding-top: 30px;
+            letter-spacing: 5px;
+
+        }
+
+        /* 底部信息 */
+        ul li {
+            list-style:none;
+        }
+
+        .footer {
+            font-size: 12px;
+            margin-left: 200px;
+            margin-top: 80px;
+            float: left;
+        }
+
+        .footer p span {
+            padding-right: 10px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        a:link,a:hover,a:visited,a:active {
+            color:black;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        p {
+            margin-left:20px;
+            line-height:30px;
+        }
+    </style>
+</head>
+<body style="margin: 0px auto;background-color:#F4F4F4;">
+<!-- 顶部-->
+<div style="background-color: #64845F;height: 40px;font-size: 14px;line-height: 40px;">
+    <div style="width: 400px;float: left;padding-left: 200px;">
+        <span th:if="${session.LOGIN_USER != null}" class="spanstyle" style="margin-left: 10px;font-size: 14px;">
+            <a th:href="@{openUpdateInfo.html}" th:text="${session.LOGIN_USER.nickname}" style="color:black;"></a>
+        </span>
+        <span th:if="${session.LOGIN_USER != null}" class="spanstyle" style="margin-left: 10px;font-size: 14px;">
+            <a th:href="@{../user/logOut}" style="color:black;">注销账号</a>
+        </span>
+        <span th:if="${session.LOGIN_USER == null}" class="spanstyle"><a href="login.html" th:href="@{/login.html}" style="color:black;">亲，请登录</a></span>
+        <span th:if="${session.LOGIN_USER == null}" class="spanstyle"><a href="register.html" th:href="@{/register.html}" style="color:black;">免费注册</a></span>
+    </div>
+    <div style="width: 400px;float: right;">
+        <span><a th:href="@{../cart/findCart}" style="color:black;">购物车</a></span>
+        <span th:if="${session.LOGIN_USER != null}" class="spanstyle" style="margin-left: 10px;font-size: 14px;">
+            <a th:href="@{../order/findUserOrder}" style="color:black;">我的订单</a>
+        </span>
+    </div>
+</div>
+<!-- <div th:include="header :: copy"></div> -->
+
+<!-- 头部导航栏-->
+<div style="height: 100px;background-color:white;">
+    <div style="float: left;padding-left: 200px;padding-top: 30px;;">
+        <span style="font-family: STXingkai;font-size: 60px;margin-right: 50px;">纤纤</span>
+    </div>
+    <div style="float: left;font-size: 16px;padding-top: 30px;">
+        <ul>
+            <li style="display: inline;padding-right: 50px;"><a href="#new">新品专区</a></li>
+            <li style="display: inline;padding-right: 50px;"><a href="#hotsale">热销专区</a></li>
+            <li style="display: inline;padding-right: 50px;"><a href="#about">关于汉服</a></li>
+        </ul>
+    </div>
+    <div style="float: left;margin-left: 100px;padding-top: 30px;" class="container">
+        <form action="../product/findByLikePname" class="parent">
+            <input type="text" name="pname" placeholder="输入商品名称关键字搜索">
+            <input type="submit" value="搜&nbsp;&nbsp;&nbsp;索">
+        </form>
+    </div>
+
+</div>
+<!-- 轮播图 -->
+<div style="padding-left: 200px;">
+    <div style="background-color: #64845F;float:left;width: 200px;height: 420px;">
+        <ul style="">
+            <li class="rightnav"><a th:href="@{/product/selectByPclass(pclass='1')}">交领襦裙</a></li>
+            <li class="rightnav"><a th:href="@{/product/selectByPclass(pclass='2')}">对襟襦裙</a></li>
+            <li class="rightnav"><a th:href="@{/product/selectByPclass(pclass='3')}">袄裙专区</a></li>
+            <li class="rightnav"><a th:href="@{/product/selectByPclass(pclass='4')}">披风/斗篷</a></li>
+            <li class="rightnav"><a th:href="@{/product/selectByPclass(pclass='5')}">宋裤/褙子</a></li>
+            <li class="rightnav"><a th:href="@{/product/selectByPclass(pclass='6')}">必备单品</a></li>
+        </ul>
+    </div>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><a th:href="@{/product/findDetails(pid=25)}"><img src="../images/汉尚_02.jpg"/></a></div>
+            <div class="swiper-slide"><a th:href="@{/product/findDetails(pid=26)}"><img src="../images/汉尚_03.png" alt=""></a></div>
+            <div class="swiper-slide"><a th:href="@{/product/findDetails(pid=27)}"><img src="../images/钟灵记_01.jpg" alt=""></a></div>
+            <div class="swiper-slide"><a th:href="@{/product/findDetails(pid=28)}"><img src="../images/钟灵记_04.jpg" alt=""></a></div>
+        </div>
+        <!-- 如果需要分页器 -->
+        <div class="swiper-pagination"></div>
+
+        <!-- 如果需要导航按钮 -->
+        <!-- <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div> -->
+
+    </div>
+</div>
+<br/><br/>
+
+<!-- 商品信息 -->
+<!-- 每周上新 -->
+<div id="new" style="float:left;margin-left:180px;margin-top:30px;background-color:white;">
+    <h3 style="padding-left:20px;">每周上新</h3>
+    <div>
+        <div style="float:left;width:240px;height:350px;margin-left:20px;" th:each="product : ${session.newList}">
+            <dl>
+                <dt>
+                    <a th:href="@{/product/findDetails(pid=${product.pid})}">
+                        <img style="width:240px;height:240px;" alt="" th:src="@{'../goods/' + ${product.picaddress}}">
+                    </a>
+                </dt>
+                <dd style="margin-left:0px;margin-top:10px;">
+                    <a th:href="@{/product/findDetails(pid=${product.pid})}" style="line-height:16px;font-size:14px;dispaly:block;height:32px;">
+                        <span th:text="${product.pdescription}"></span>
+                    </a>
+                    <div style="font-size:12px;margin-top:10px;">
+                        <b>￥<span th:text="${product.pprice}"></span></b>&nbsp;
+                        <span style="color:#666;text-decoration: line-through;">￥<span th:text="${product.pprice} + 100"></span></span>&nbsp;
+                        <span style="color:#666;">已售：231件</span>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<!-- 热销专区 -->
+<div id="hotsale" style="float:left;margin-left:180px;margin-top:30px;background-color:white;">
+    <h3 style="padding-left:20px;">热销专区</h3>
+    <div>
+        <div style="float:left;width:240px;height:350px;margin-left:20px;" th:each="product : ${session.hotList}">
+            <dl>
+                <dt>
+                    <a th:href="@{/product/findDetails(pid=${product.pid})}">
+                        <img style="width:240px;height:240px;" alt="" th:src="@{'../goods/' + ${product.picaddress}}">
+                    </a>
+                </dt>
+                <dd style="margin-left:0px;margin-top:10px;">
+                    <a th:href="@{/product/findDetails(pid=${product.pid})}" style="line-height:16px;font-size:14px;dispaly:block;height:32px;">
+                        <span th:text="${product.pdescription}"></span>
+                    </a>
+                    <div style="font-size:12px;margin-top:10px;">
+                        <b>￥<span th:text="${product.pprice}"></span></b>&nbsp;
+                        <span style="color:#666;text-decoration: line-through;">￥<span th:text="${product.pprice} + 100"></span></span>&nbsp;
+                        <span style="color:#666;">已售：231件</span>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<!--关于汉服-->
+<div id="about" style="float:left;margin-left:180px;margin-right:300px;margin-top:30px;background-color:white;">
+    <h3 style="padding-left:20px;">关于汉服</h3>
+    <div>
+        <p><b>简介</b></p>
+        <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;汉服，全称是“汉民族传统服饰”，又称汉衣冠、汉装、华服，是从黄帝即位到公元17世纪中叶（明末清初），在汉族的主要居住区，以“华夏－汉”文化为背景和主导思想，以华夏礼仪文化为中心，通过自然演化而形成的具有独特汉民族风貌性格，明显区别于其他民族的传统服装和配饰体系，是中国“衣冠上国”、“礼仪之邦”、“锦绣中华”、赛里斯国的体现，承载了汉族的染织绣等杰出工艺和美学，传承了30多项中国非物质文化遗产以及受保护的中国工艺美术。
+        </p>
+        <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;与汉人一词类似，汉服中的“汉”字的词义外延亦存在着由汉朝扩大为整个民族指称的过程。如《马王堆三号墓遣册》关于“汉服”最早的记载：“简四四‘美人四人，其二人楚服，二人汉服’”中的“汉服”是指汉朝的服饰礼仪制度，即《周礼》《仪礼》《礼记》里的冠服体系；而成书于唐朝的《蛮书》的记载：“初袭汉服，后稍参诸戎风俗，迄今但朝霞缠头，其余无异”中的“汉服”指的则是汉人的服饰礼仪制度。
+        </p>
+        <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;汉服“始于黄帝，备于尧舜”，源自黄帝制冕服。定型于周朝，并通过汉朝依据四书五经形成完备的冠服体系，成为神道设教的一部分。因此后来各个华夏朝代均宗周法汉以继承汉衣冠为国家大事，于是有了二十四史中的舆服志。“黄帝、尧、舜垂衣裳而治天下，益取自乾坤”，是说上衣下裳的形制是取天意而定，是神圣的。汉服还通过华夏法系影响了整个汉文化圈，亚洲各国的部分民族如日本、朝鲜、越南、蒙古、不丹等等服饰均具有或借鉴汉服特征。
+        </p>
+        <p><b>基本结构</b></p>
+        <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;汉服采用幅宽二尺二寸（50cm左右）的布帛剪裁而成，且分为领、襟、衽、衿、裾、袖、袂、带、韨等十部分。取两幅相等长度的布，分别对折，作为前襟后裾，缝合后背中缝。前襟无衽即为直领对襟衣。若再取一幅布，裁为两幅衽，缝在左右两襟上，则为斜领右衽衣。前襟后裾的中缝称为裻，即督脉、任脉，衽在任脉右侧，故称右衽。裾的长度分为腰中，膝上，足上。根据裾的长短，汉服有三种长度∶襦、裋、深衣。袖子与襟裾的接缝称为袼，袖口称为祛。一套完整的汉服通常有三层：小衣（内衣）、中衣、大衣。
+        </p>
+        <p><b>交领右衽</b></p>
+        <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;汉服的领型最典型的是“交领右衽”，就是衣领直接与衣襟相连，衣襟在胸前相交叉，左侧的衣襟压住右侧的衣襟，在外观上表现为“y”字形，形成整体服装向右倾斜的效果。衽，本义衣襟。左前襟掩向右腋系带，将右襟掩覆于内，称右衽，反之称左衽。这就是汉服在历代变革款式上一直保持不变的“交领右衽”传统，也和和中国历来的“以右为尊”的思想密不可分，这些特点都明显有别于其他民族的服饰。
+        </p>
+        <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;另外一种作为“交领”补充的是“直领”和“盘领”。直领就是领子从胸前直接平行垂直下来，而不在胸前交叉，有的在胸部有系带，有的则直接敞开而没有系带。这种直领的衣服，一般穿在交领汉服外面，像罩衫、半臂、褙子等日常外衣款式中经常运用。盘领是男装中比较多见的一个款式，领型为盘子状的圆形，也是右衽的，在右侧肩部有系带，在汉唐官服中采用，日常服中也有盘领款式。
+        </p>
+    </div>
+</div>
+
+<!-- 底部网站信息-->
+<div class="footer">
+    <p>
+        <span>关于纤纤</span>
+        <span>合作伙伴</span>
+        <span>营销中心</span>
+        <span>廉正举报</span>
+        <span>联系客服</span>
+        <span>开放平台</span>
+        <span>诚征英才</span>
+        <span>联系我们</span>
+        <span>网站地图</span>
+        <span>隐私权政策</span>
+        <span>法律声明</span>
+        <span>知识产权</span>
+        <b>|</b> <em>© 2019-现在 Xianxian.com 版权所有</em>
+    </p>
+    <p>
+        <span>增值电信业务经营许可证：浙B2-20080224</span>
+        <b>|</b>
+        <span>增值电信业务经营许可证（跨地区）： B2-20150210</span>
+        <b>|</b>
+        <span>网络文化经营许可证：浙网文[2016]0268-027号</span>
+        <b>|</b>
+        <span>浙江省网络食品销售第三方平台提供者备案：浙网食A33010001</span>
+    </p>
+    <p>
+        <span>互联网药品信息服务资格证书（浙）-经营性-2018-0010</span>
+        <b>|</b>
+        <span>短消息类服务接入代码使用证书：号【2016】00154-A01</span>
+        <b>|</b>
+        <span>信息网络传播视听许可证：1109364号</span>
+        <b>|</b>
+        <span>出版物网络交易平台服务经营备案号：新出发浙备字第002号</span>
+    </p>
+    <p>
+            <span>
+                    <!--<span class="tb-footer-mod" style="background-position:-861px 0px; width:20px; height: 20px; ">
+                    </span>-->
+                    浙公网安备 33010002000078号
+            </span>
+        <b>|</b>
+        <span>广播电视节目制作经营许可证（浙）字第01012号</span>
+        <b>|</b>
+        <span>市场名称登记证：工商网市字3301004120号</span>
+        <b>|</b>
+        <span>医疗器械网络交易服务第三方平台备案：（浙）网械平台备字[2018]第00004号</span>
+    </p>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.0/js/swiper.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.0/js/swiper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.0/js/swiper.esm.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.0/js/swiper.esm.bundle.js"></script>
+<script type="text/javascript">
+    window.onload = function() {
+        var mySwiper = new Swiper ('.swiper-container', {
+            // 轮播图的方向，也可以是vertical方向
+            direction:'horizontal',
+
+            // 开启自动播放
+            autoplay:true,
+
+            // 开启链接跳转，默认为true
+            preventClicks : false,
+
+
+
+            //播放速度
+            loop: true,
+
+            // 分页器
+            pagination: {
+                el: '.swiper-pagination',
+                clickable :true // 点击小圆点切换图片
+            }
+
+            // 前进后退按钮
+            /* navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            }, */
+
+        });
+    }
+</script>
+</body>
+</html>
