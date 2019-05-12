@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>购物车</title>
+<style th:inline="css">
+body {
+    margin: 0 auto;
+}
+
+/* 顶部 */
+.spanstyle {
+    padding-right: 30px;
+}
+
+input {
+    /* 去除input边框及阴影 */
+    outline-color: invert;
+    outline-style: none;
+    outline-width: 0px;
+    border: none;
+    border-style: none;
+    text-shadow: none;
+    /*-webkit-appearance: none;*/
+    -webkit-user-select: text;
+    outline-color: transparent;
+    box-shadow: none;
+}
+
+.logo {
+    text-decoration:none;
+}
+
+.logo:link,.logo:hover,.logo:active,.logo:visited {
+    text-decoration:none;
+    color:black;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:link {
+    color: black;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+tr {
+    margin-top:100px;
+}
+
+button {
+    border:none;
+    outline:none;
+}
+
+td {
+    padding-right:10px;
+}
+</style>
+</head>
+<body>
+<!-- 顶部-->
+<div style="background-color: #64845F;height: 40px;font-size: 14px;line-height: 40px;">
+    <div style="width: 400px;float: left;padding-left: 200px;">
+        <span th:if="${session.LOGIN_USER != null}" class="spanstyle" style="margin-left: 10px;font-size: 14px;">
+            <a th:href="@{/openUpdateInfo.html}" th:text="${session.LOGIN_USER.nickname}" style="color:black;"></a>
+        </span>
+        <span th:if="${session.LOGIN_USER != null}" class="spanstyle" style="margin-left: 10px;font-size: 14px;">
+            <a th:href="@{/user/logOut}" style="color:black;">注销账号</a>
+        </span>
+        <span th:if="${session.LOGIN_USER == null}" class="spanstyle"><a href="login.html" th:href="@{/login.html}" style="color:black;">亲，请登录</a></span>
+        <span th:if="${session.LOGIN_USER == null}" class="spanstyle"><a href="register.html" th:href="@{/register.html}" style="color:black;">免费注册</a></span>
+    </div>
+    <div style="width: 400px;float: right;">
+        <span><a href="cart.html" th:href="@{/cart.html}" style="color:black;">购物车</a></span>
+    </div>
+</div>
+
+    <!-- 头部搜索框-->
+    <div style="height: 100px;border-bottom: 1px solid #64845F;">
+        <div style="float: left;padding-left: 200px;padding-top: 30px;;">
+            <span
+                style="font-family: STXingkai;font-size: 60px;margin-right: 50px;"><a class="logo" th:href="@{index}">纤纤</a></span>
+        </div>
+    </div>
+    
+    <!-- 购物车列表 -->
+    <div style="margin-left:180px;margin-top:20px;">
+        <form th:action="@{/order/submitOrder}" method="post">
+        <div style="float:left;">
+            <img style="margin-left:200px;width:300px;height:421px;" th:src="@{'../goods/' + ${session.orderitem.opic}}">
+        </div>
+        <div style="float:left;margin-left:50px;line-height:30px;">
+            <table style="border-collapse:separate; border-spacing:0px 20px;">
+                <tr>
+                    <td>商品编号</td>
+                    <td>
+                        <input name="pid" th:value="${session.orderitem.pid}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>商品描述</td>
+                    <td th:text="${session.orderitem.pdescription}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>单&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价</td>
+                    <td>
+                        <input name="oprice" th:value="${session.orderitem.oprice}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量
+                    </td>
+                    <td>
+                        <input name="total" th:value="${session.orderitem.total}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        总&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价
+                    </td>
+                    <td>
+                        <input name="account" th:value="${session.orderitem.account}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        尺&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码
+                    </td>
+                    <td>
+                        <input name="osize" th:value="${session.orderitem.osize}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        颜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色
+                    </td>
+                    <td>
+                        <input name="ocolor" th:value="${session.orderitem.ocolor}">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <a>
+                            <input type="submit" value="提交订单" style="background-color:#64845F;width:300px;height:40px;">
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        </form>
+    </div>
+</body>
+</html>

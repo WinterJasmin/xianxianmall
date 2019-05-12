@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>修改商品</title>
+</head>
+<body>
+<form th:action="@{/product/updateProduct(pid=${session.product.pid})}" enctype="multipart/form-data" method="post">
+    <table style="margin:auto;border-collapse:separate; border-spacing:0px 10px;">
+        <tr>
+            <td style="width:100px;">
+                <label for="pname">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：</label>
+            </td>
+            <td style="width:300px;">
+                <input type="text" id="pname" name="pname" th:value="${session.product.pname}" style="height:30px;width:200px;">
+            </td>
+        </tr>
+        <tr>
+            <td style="width:100px;">
+                <label for="pdiscr">商品信息：</label>
+            </td>
+            <td style="width:300px;">
+                <textarea id="pdiscr" name="pdiscr" th:text="${session.product.pdescription}" rows="10" cols="20"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:100px;">
+                <label for="pprice">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：</label>
+            </td>
+            <td style="width:300px;">
+                <input type="text" id="pprice" name="pprice" th:value="${session.product.pprice}" style="height:30px;width:200px;">
+            </td>
+        </tr>
+        <tr>
+            <td style="width:100px;">
+                <label>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类：</label>
+            </td>
+            <td style="width:300px;" id="pclass">
+                <input type="radio" name="pclass" value="1" th:checked="${session.product.pclass}">交领襦裙
+                <input type="radio" name="pclass" value="2" th:checked="${session.product.pclass}">对襟襦裙
+                <input type="radio" name="pclass" value="3" th:checked="${session.product.pclass}">袄裙专区<br/>
+                <input type="radio" name="pclass" value="4" th:checked="${session.product.pclass}">披风/斗篷
+                <input type="radio" name="pclass" value="5" th:checked="${session.product.pclass}">宋裤/褙子
+                <input type="radio" name="pclass" value="6" th:checked="${session.product.pclass}">必备单品
+            </td>
+        </tr>
+        <tr>
+            <td style="width:100px;">
+                <label for="size">尺&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</label>
+            </td>
+            <td style="width:400px;">
+                <input type="text" id="size" name="size" placeholder="请输入尺码，并以逗号分隔" th:value="${session.product.size}" style="height:30px;width:200px;">
+            </td>
+        </tr>
+        <tr>
+            <td style="width:100px;">
+                <label for="color">颜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色：</label>
+            </td>
+            <td style="width:400px;">
+                <input type="text" id="color" name="color" placeholder="请输入颜色，并以逗号分隔" th:value="${session.product.color}" style="height:30px;width:200px;">
+            </td>
+        </tr>
+        <tr>
+            <td style="width:100px;">
+                <label for="pic">图&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;片：</label>
+            </td>
+            <td style="width:300px;">
+                <input type="file" id="pic" name="pic" multiple="multiple" style="height:30px;">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" value="提交" style="width:100px;height:30px;">
+            </td>
+            <td>
+                <input type="reset" value="重置" style="width:100px;float:left;margin-left:50px;height:30px;">
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

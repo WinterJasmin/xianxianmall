@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>搜索页面</title>
+<style th:inline="css">
+body {
+    margin: 0 auto;
+}
+
+/* 顶部 */
+.spanstyle {
+    padding-right: 30px;
+}
+
+/* 头部导航栏 */
+.container {
+    width: 350px;
+    height: 50px;
+    /*margin: 100px auto;*/
+}
+
+.logo {
+    text-decoration:none;
+}
+
+.logo:link,.logo:hover,.logo:active,.logo:visited {
+    text-decoration:none;
+    color:black;
+}
+
+.parent {
+    width: 100%;
+    height: 42px;
+    /* top: 4px;*/
+    /*position: relative;*/
+}
+
+.parent>input:first-of-type {
+    /*输入框高度设置为40px, border占据2px，总高度为42px*/
+    width: 200px;
+    height: 40px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    outline: none;
+}
+
+.parent>input:first-of-type:focus {
+    border: 1px solid #64845F;
+    padding-left: 10px;
+}
+
+.parent>input:last-of-type {
+    /*button按钮border并不占据外围大小，设置高度42px*/
+    width: 100px;
+    height: 44px;
+    position: absolute;
+    background: #64845F;
+    border: 1px solid #64845F;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+}
+
+ul li {
+    list-style: none;
+}
+
+ul li:hover {
+    background-color:#EBE8D7;
+}
+
+ul li ul li {
+    float:left;
+    width:100%;
+    margin:0;
+    line-height:50px;
+    background-color: #EBE8D7;
+}
+
+ul li ul {
+    display:none;
+    position:relative;
+    width:100px;
+    
+}
+
+ul li ul li:hover {
+    background-color:#64845F;
+}
+
+input {
+    /* 去除input边框及阴影 */
+    outline-color: invert;
+    outline-style: none;
+    outline-width: 0px;
+    border: none;
+    border-style: none;
+    text-shadow: none;
+    -webkit-appearance: none;
+    -webkit-user-select: text;
+    outline-color: transparent;
+    box-shadow: none;
+}
+
+/* 内容 */
+a {
+    text-decoration: none;
+}
+
+a:link,a:hover,a:visited,a:active {
+    color:black;
+}
+</style>
+<script type="text/javascript">
+    function show(li) {
+        var ul = li.getElementsByTagName("ul")[0];
+        // 关建二：在li这个对象内查询标签名为ul的标签，由于二级标签只有一个，所以索引为0即可。
+        ul.style.display = "block";
+       // 关键三：当鼠标划过li时，其子元素ul标签的display为block
+    }
+    function hide(li) {
+        var ul = li.getElementsByTagName("ul")[0];
+        ul.style.display = "none";
+       // 关键四：当鼠标划出li时，其子元素ul的display为none
+    }
+</script>
+</head>
+<body style="background-color:#F4F4F4;">
+    <!-- 顶部-->
+    <div style="background-color: #64845F;height: 40px;font-size: 14px;line-height: 40px;">
+        <div style="width: 400px;float: left;padding-left: 200px;">
+            <span th:if="${session.LOGIN_USER != null}" class="spanstyle" style="margin-left: 10px;font-size: 14px;">
+                <a th:href="@{../openUpdateInfo.html}" th:text="${session.LOGIN_USER.nickname}" style="color:black;"></a>
+            </span>
+            <span th:if="${session.LOGIN_USER != null}" class="spanstyle" style="margin-left: 10px;font-size: 14px;">
+                <a th:href="@{../user/logOut}" style="color:black;">注销账号</a>
+            </span>
+            <span th:if="${session.LOGIN_USER == null}" class="spanstyle"><a href="../../login.html" th:href="@{login.html}" style="color:black;">亲，请登录</a></span>
+            <span th:if="${session.LOGIN_USER == null}" class="spanstyle"><a href="../../register.html" th:href="@{register.html}" style="color:black;">免费注册</a></span>
+        </div>
+        <div style="width: 400px;float: right;">
+            <span><a href="cart.html" th:href="@{../cart/findCart}" style="color:black;">购物车</a></span>
+            <span th:if="${session.LOGIN_USER != null}" class="spanstyle" style="margin-left: 10px;font-size: 14px;">
+            <a th:href="@{../order/findUserOrder}" style="color:black;">我的订单</a>
+            </span>
+        </div>
+    </div>
+
+    <!-- 头部搜索框-->
+    <div style="height: 100px;border-bottom: 1px solid #64845F;">
+        <div style="float: left;padding-left: 200px;padding-top: 30px;;">
+            <span
+                style="font-family: STXingkai;font-size: 60px;margin-right: 50px;"><a class="logo" th:href="@{../index}">纤纤</a></span>
+        </div>
+        <div style="float: left;font-size: 16px;padding-top: 30px;">
+            <ul>
+                <li onmouseover="show(this)" onmouseout="hide(this)" style="position:absolute;">
+                    <span style="line-height:50px;padding-top:10px;"><a th:href="@{/product/selectAll}">所有分类</a></span>
+                    <ul style="padding-left:0px;">
+                        <li><a th:href="@{/product/selectByPclass(pclass='1')}">交领襦裙</a></li>
+                        <li><a th:href="@{/product/selectByPclass(pclass='2')}">对襟襦裙</a></li>
+                        <li><a th:href="@{/product/selectByPclass(pclass='3')}">袄裙专区</a></li>
+                        <li><a th:href="@{/product/selectByPclass(pclass='4')}">披风/斗篷</a></li>
+                        <li><a th:href="@{/product/selectByPclass(pclass='5')}">宋裤/褙子</a></li>
+                        <li><a th:href="@{/product/selectByPclass(pclass='6')}">必备单品</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div style="float: right;margin-right: 300px;padding-top: 30px;" class="container">
+            <form action="findByLikePname" class="parent">
+                <input type="text" name="pname" placeholder="输入商品名称关键字搜索">
+                <input type="submit" value="搜&nbsp;&nbsp;&nbsp;索">
+            </form>
+        </div>
+    </div>
+
+    <!-- 内容部分 -->
+    <div>
+    <div style="margin-left:180px;float:left;background-color:white;margin-right:200px;">
+        <div style="float:left;width:240px;height:350px;margin-left:20px;" th:each="p : ${session.pclasslist}">
+            <dl>
+                <dt>
+                    <a th:href="@{/product/findDetails(pid=${p.pid})}">
+                        <img style="width:240px;height:240px;" alt="" th:src="@{'../goods/' + ${p.picaddress}}">
+                    </a>
+                </dt>
+                <dd style="margin-left:0px;margin-top:10px;">
+                    <a th:href="@{/product/findDetails(pid=${p.pid})}" style="line-height:16px;font-size:14px;dispaly:block;height:32px;">
+                        <span th:text="${p.pdescription}"></span>
+                    </a>
+                    <div style="font-size:12px;margin-top:10px;">
+                        <b>￥<span th:text="${p.pprice}"></span></b>&nbsp;
+                        <span style="color:#666;text-decoration: line-through;">￥<span th:text="${p.pprice} + 100"></span></span>&nbsp;
+                        <span style="color:#666;">已售：231件</span>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+        <div th:if="${session.nullProduct != null}" style="text-align:center;float:left;width:240px;height:350px;margin-left:20px;" th:each="p : ${session.pclasslist}">
+            <dl>
+                <span style="font-size:18px;font-family:SimSun;color:#666666;" th:text="${session.nullProduct}"></span>
+            </dl>
+        </div>
+    </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>购物车</title>
+<style th:inline="css">
+body {
+    margin: 0 auto;
+}
+
+/* 顶部 */
+.spanstyle {
+    padding-right: 30px;
+}
+
+/* 头部导航栏 */
+.container {
+    width: 350px;
+    height: 50px;
+    /*margin: 100px auto;*/
+}
+
+.logo {
+    text-decoration:none;
+}
+
+.logo:link,.logo:hover,.logo:active,.logo:visited {
+    text-decoration:none;
+    color:black;
+}
+
+.parent {
+    width: 100%;
+    height: 42px;
+    /* top: 4px;*/
+    /*position: relative;*/
+}
+
+.parent>input:first-of-type {
+    /*输入框高度设置为40px, border占据2px，总高度为42px*/
+    width: 200px;
+    height: 40px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    outline: none;
+}
+
+.parent>input:first-of-type:focus {
+    border: 1px solid #64845F;
+    padding-left: 10px;
+}
+
+.parent>input:last-of-type {
+    /*button按钮border并不占据外围大小，设置高度42px*/
+    width: 100px;
+    height: 44px;
+    position: absolute;
+    background: #64845F;
+    border: 1px solid #64845F;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+}
+
+input {
+    /* 去除input边框及阴影 */
+    outline-color: invert;
+    outline-style: none;
+    outline-width: 0px;
+    border: none;
+    border-style: none;
+    text-shadow: none;
+    /*-webkit-appearance: none;*/
+    -webkit-user-select: text;
+    outline-color: transparent;
+    box-shadow: none;
+}
+
+/* 购物车列表 */
+.cartlist {
+    border:1px solid #CCCCCC;
+}
+
+.cartimg {
+    width:80px;
+    height:80px;
+} 
+
+a {
+    text-decoration: none;
+}
+
+a:link {
+    color: black;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.first {
+    width:20px;
+}
+
+.sixth,.seventh,.eightth {
+    width:200px;
+}
+
+.second {
+    width:85px;
+}
+
+.third {
+    width:200px;
+    padding-top:0px;
+    margin-right:100px;
+}
+
+.fourth {
+    width:100px;
+    padding-top:0px;
+    margin-right:100px;
+}
+
+.fourth div {
+    font-size:14px;
+    color:#666;
+    display:block;
+    margin-top:0px;
+    font-family: NSimSun;
+}
+
+.fifth {
+    width:100px;
+}
+
+.eightth a {
+    font-size:14px;
+    font-family: NSimSun;
+}
+
+tr {
+    margin-top:100px;
+}
+
+/*底部结算框*/
+ul {
+    list-style:none;
+    display:inline;
+}
+
+li {
+    display: inline;
+    margin-right: 40px;
+}
+
+button {
+    float:right;
+    font-size:18px;
+    width:150px;
+    height:50px;
+    background-color:#64845F;
+    margin-left:750px;
+    border-left-width:0px;
+    border-right-width:0px;
+    border-top-width:0px;
+    border-bottom-width:0px;
+}
+
+/*.button a {
+    text-decoration:none;
+}
+
+.button a:hover,.button a:link,.button a:active,.button a:visited {
+    color:black;
+}*/
+
+.del {
+    border: 0;
+    background-color: transparent;
+    outline: none;
+    margin-left: 0px;
+    font-size: 16px;
+    width: 55.8px;
+    height: 17px;
+}
+</style>
+<script type="text/javascript">
+    function account() {
+        var flag = false;
+        var cidValue = "";
+        var checkbox = document.querySelectorAll('.checkbox');
+        for (var i = 0; i < checkbox.length; i++) {
+            if (checkbox[i].checked == true) {
+                cidValue += ("," + checkbox[i].value);
+                flag = true
+            }
+        }
+        if (flag == false) {
+            alert("您还未选择商品！");
+        } else {
+            /*alert("cidValue:"+cidValue);*/
+            document.getElementById('cidValue').value = cidValue.substring(1, cidValue.length);
+            /*alert("$cidValue:"+document.getElementById('cidValue').value);*/
+            document.forms[0].action = "cart/account";
+            document.forms[0].submit();
+        }
+    }
+
+    /*function del() {
+        var flag = false;
+        var cidValue = "";
+        var checkbox = document.querySelectorAll('.checkbox');
+        for (var i = 0; i < checkbox.length; i++) {
+            if (checkbox[i].checked == true) {
+                cidValue += ("," + checkbox[i].value);
+                flag = true
+            }
+        }
+        if (flag == false) {
+            alert("您还未选择商品！");
+        } else {
+            /!*alert("cidValue:"+cidValue);*!/
+            document.getElementById('cidValue').value = cidValue.substring(1, cidValue.length);
+            /!*alert("$cidValue:"+document.getElementById('cidValue').value);*!/
+            document.forms[0].action = "cart/delCart";
+            document.forms[0].submit();
+        }
+    }*/
+
+    /*全选*/
+    function selectAll() {
+        var checkbox = document.querySelectorAll('.checkbox');
+        if (document.getElementById('allselect').checked == true) {
+            for (var i = 0; i < checkbox.length; i++) {
+                checkbox[i].checked = true;
+            }
+        } else {
+            for (var i = 0; i < checkbox.length; i++) {
+                checkbox[i].checked = false;
+            }
+        }
+    }
+</script>
+</head>
+<body>
+<!-- 顶部-->
+<div style="background-color: #64845F;height: 40px;font-size: 14px;line-height: 40px;">
+    <div style="width: 400px;float: left;padding-left: 200px;">
+        <span th:if="${session.LOGIN_USER != null}" class="spanstyle" style="margin-left: 10px;font-size: 14px;">
+            <a th:href="@{/openUpdateInfo.html}" th:text="${session.LOGIN_USER.nickname}" style="color:black;"></a>
+        </span>
+        <span th:if="${session.LOGIN_USER != null}" class="spanstyle" style="margin-left: 10px;font-size: 14px;">
+            <a th:href="@{/user/logOut}" style="color:black;">注销账号</a>
+        </span>
+        <span th:if="${session.LOGIN_USER == null}" class="spanstyle"><a href="login.html" th:href="@{/login.html}" style="color:black;">亲，请登录</a></span>
+        <span th:if="${session.LOGIN_USER == null}" class="spanstyle"><a href="register.html" th:href="@{/register.html}" style="color:black;">免费注册</a></span>
+    </div>
+    <div style="width: 400px;float: right;">
+        <span><a th:href="@{/cart/findCart}" style="color:black;">购物车</a></span>
+        <span th:if="${session.LOGIN_USER != null}" class="spanstyle" style="margin-left: 10px;font-size: 14px;">
+            <a th:href="@{/order/findUserOrder}" style="color:black;">我的订单</a>
+        </span>
+    </div>
+</div>
+
+    <!-- 头部搜索框-->
+    <div style="height: 100px;border-bottom: 1px solid #64845F;">
+        <div style="float: left;padding-left: 200px;padding-top: 30px;;">
+            <span
+                style="font-family: STXingkai;font-size: 60px;margin-right: 50px;"><a class="logo" th:href="@{../index}">纤纤</a></span>
+        </div>
+        <div style="float: right;margin-right: 300px;padding-top: 30px;"
+            class="container">
+            <form action="findCartByPdesc" class="parent">
+                <input type="text" name="pdescription">
+                <input type="submit" value="搜&nbsp;&nbsp;&nbsp;索">
+            </form>
+        </div>
+    </div>
+    
+    <!-- 购物车列表 -->
+    <div style="margin-left:180px;margin-top:20px;">
+        <!--<form th:action="@{account}">-->
+        <form action="">
+            <input type="hidden" id="cidValue" name="cidValue" value="">
+            <table style="border-collapse:separate; border-spacing:0px 20px;">
+                <tr>
+                    <td class="first">&nbsp;&nbsp;</td>
+                    <td class="second"><span style="font-size:16px;font-family: SimSun;">商品信息</span></td>
+                    <td class="third">&nbsp;&nbsp;</td>
+                    <td class="fourth">&nbsp;&nbsp;</td>
+                    <td class="fifth"><span style="font-size:14px;font-family: SimSun;padding-left:50px;">数量</span></td>
+                    <td class="sixth"><span style="font-size:14px;font-family: SimSun;padding-left:80px;">单价</span></td>
+                    <td class="seventh"><span style="font-size:14px;font-family: SimSun;padding-left:80px;">金额</span></td>
+                    <td class="eightth"><span style="font-size:14px;font-family: SimSun;padding-left:80px;">操作</span></td>
+                </tr>
+                <tr class="cartlist" th:each="cart : ${session.cartList}">
+                    <td class="first">
+                        <input type="checkbox" class="checkbox" name="cid" th:value="${cart.cid}" style="box-sizing:border-box;width:15px;height:15px;border:1px solid #CCCCCC">
+                    </td>
+                    <td class="second">
+                        <img class="cartimg" th:src="@{'../goods/' + ${cart.cpic}}">
+                    </td>
+                    <td class="third">
+                        <div style="font-size:14px;font-family:NSimSun;display:block;" th:text="${cart.pdescription}">
+                        汉尚华莲灵语鹤齐腰襦裙传统汉服女装刺绣渐变色6米摆两片式褶裙
+                        </div>
+                        <img src="../images/7天退换.jpg">
+                    </td>
+                    <td class="fourth">
+                        <div>尺码：<span th:text="${cart.csize}">M</span></div>
+                        <div>颜色：<span th:text="${cart.ccolor}"></span></div>
+                        <div>&nbsp;&nbsp;</div>
+                        <div>&nbsp;&nbsp;</div>
+                    </td>
+                    <td  class="fifth">
+                        <input type="number" th:value="${cart.total}" style="width:50px;font-size:16px;height:30px;padding-left:20px;margin-left:30px;border:1px solid #CCCCCC;">
+                    </td>
+                    <td class="sixth">
+                        <b style="padding-left:70px;">￥<span th:text="${cart.cprice}">126.00</span></b>
+                    </td>
+                    <td class="seventh">
+                        <b style="padding-left:70px;">￥<span th:text="${cart.account}">126.00</span></b>
+                    </td>
+                    <td class="eightth">
+                        <a th:href="@{delCart(cidValue=${cart.cid})}"><span style="padding-left:80px;">删除</span></a>
+                    </td>
+                </tr>
+                <tr th:if="${session.nullCart != null}">
+                    <td colspan="8" style="text-align:center;">
+                        <span style="font-size:18px;font-family:SimSun;color:#666666;" th:text="${session.nullCart}"></span>
+                    </td>
+                </tr>
+            </table>
+            <div style="background-color:#F4F4F4;z-index:9999;position:fixed;bottom:1px;">
+                <ul style="float:left;">
+                    <li>
+                        <input type="checkbox" id="allselect" onclick="selectAll();">
+                        <label for="allselect">全选</label>
+                    </li>
+                    <!--<li>
+                        <button class="del" onclick="del();">删&nbsp;&nbsp;&nbsp;&nbsp;除</button>
+                    </li>-->
+                </ul>
+                <button onclick="account();">结&nbsp;&nbsp;&nbsp;&nbsp;算</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

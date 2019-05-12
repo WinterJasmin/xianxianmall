@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>查看所有商品</title>
+<style th:inline="css">
+.listtable tbody {
+	display: block;
+	height: 450px;
+	overflow-y: scroll;
+}
+
+.listtable thead, .listtable tbody tr {
+	display: table;
+	table-layout: fixed;
+	text-align: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+</style>
+</head>
+<body>
+	<!-- 搜索框 -->
+	<div style="height:80px;margin-top:10px;">
+		<form action="../product/findProductByLikePname">
+			<table style="margin:auto;">
+				<tr>
+					<td>搜索：</td>
+					<td><input type="text" name="pname" placeholder="输入商品名称关键字搜索"  style="width:150px;height:30px;">
+					</td>
+					<td><input type="submit" value="搜&nbsp;&nbsp;索" style="height:36px;width:61px;font-size:16px;"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+
+	<!-- 用户列表 -->
+	<div>
+		<table class="listtable" style="margin:auto;text-align:center;"
+			border="1" cellspacing="0">
+			<thead>
+				<tr>
+					<th style="width:50px;">编号</th>
+					<th style="width:200px;">商品名称</th>
+					<th style="width:200px;">商品信息</th>
+					<th style="width:50px;">价格</th>
+					<th style="width:80px;">状态</th>
+					<th style="width:80px;">分类</th>
+					<th style="width:200px;">上架日期</th>
+					<th style="width:100px;">尺码</th>
+					<th style="width:100px;">颜色分类</th>
+					<th style="width:100px;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="product : ${session.productList}">
+					<td th:text="${product.pid}" style="width:50px;"></td>
+					<td th:text="${product.pname}" style="width:200px;"></td>
+					<td th:text="${product.pdescription}" style="width:200px;"></td>
+					<td th:text="${product.pprice}" style="width:50px;"></td>
+					<td th:text="${product.pstate}? '已上架' : '已下架'" style="width:80px;"></td>
+					<td th:switch="${product.pclass}" style="width:80px;">
+						<span th:case="1">交领襦裙</span>
+						<span th:case="2">对襟襦裙</span>
+						<span th:case="3">袄裙专区</span>
+						<span th:case="4">披风/斗篷</span>
+						<span th:case="5">宋裤/褙子</span>
+						<span th:case="6">必备单品</span>
+					</td>
+					<td th:text="${#dates.format(product.pdate, 'yyyy-MM-dd HH:mm:ss')}" style="width:200px;">
+
+					</td>
+					<td th:text="${product.size}" style="width:100px;"></td>
+					<td th:text="${product.color}" style="width:100px;"></td>
+					<td style="width:100px;">
+						<a th:href="@{/product/updatePstate(pid=${product.pid})}"  th:text="${product.pstate == 1} ? '下架&nbsp;|&nbsp;'"></a>
+						<a th:href="@{/product/delProductByPid(pid=${product.pid})}">删除</a>&nbsp;|&nbsp;
+						<a th:href="@{/product/openUpdateProductByPid(pid=${product.pid})}">修改</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>左侧导航栏</title>
+<style th:inline="css">
+
+a {
+    text-decoration: none;
+}
+
+a:link,a:hover,a:visited,a:active {
+    color:black;
+}
+
+ul {
+    padding-left:0px;
+}
+
+ul li {
+    list-style: none;
+    background-color:#C1CFDE;
+    line-height:40px;
+    text-align:center;
+    
+}
+
+ul li:hover {
+    background-color:#80A8C5;
+}
+
+ul li ul li {
+    float:left;
+    width:150px;
+    margin:0;
+    line-height:50px;
+    background-color:white;
+}
+
+ul li ul {
+    display:none;
+    position:relative;
+    width:100px;
+    
+}
+
+.title {
+    /* font-size:24px; */
+    font-family:STXingkai;
+    float:left;
+    padding-left:200px;
+}
+</style>
+<script type="text/javascript">
+    function show(li) {
+        var ul = li.getElementsByTagName("ul")[0];
+        // 关建二：在li这个对象内查询标签名为ul的标签，由于二级标签只有一个，所以索引为0即可。
+        ul.style.display = "block";
+       // 关键三：当鼠标划过li时，其子元素ul标签的display为block
+    }
+    function hide(li) {
+        var ul = li.getElementsByTagName("ul")[0];
+        ul.style.display = "none";
+       // 关键四：当鼠标划出li时，其子元素ul的display为none
+    }
+</script>
+</head>
+<body style="padding:0 auto;margin:0 auto;">
+	<div style="float:left;width:150px;height:100%;">
+        <ul style="padding-left:0px;margin-top:0px;">
+            <li class="parentli" onmouseover="show(this)" onmouseout="hide(this)" style="border:1px solid #5F87AD;"><a href="#">用户管理</a>
+                <ul>
+                    <li><a href="/xianxianmall/user/findAll" target="rightframe">查看已注册用户</a></li>
+                    <li><a href="openUpdatePwd.html" th:href="@{openUpdatePwd.html}" target="rightframe">修改管理员密码</a></li>
+                </ul>
+            </li>
+            <li onmouseover="show(this)" onmouseout="hide(this)" style="border:1px solid #5F87AD;"><a href="#">商品管理</a>
+                <ul>
+                    <li><a href="/xianxianmall/product/findAll" th:href="" target="rightframe">查看商品</a></li>
+                    <li><a href="addProduct.html" th:href="" target="rightframe">上架商品</a></li>
+                </ul>
+            </li>
+            <li onmouseover="show(this)" onmouseout="hide(this)" style="border:1px solid #5F87AD;"><a href="#">订单管理</a>
+                <ul>
+                    <li><a href="../order/findDeliveryOrder"  target="rightframe">订单发货</a></li>
+                    <li><a href="../order/findAllOrder" target="rightframe">查看所有订单</a></li>
+                    <li><a href="../order/marketing" target="rightframe">查看报表</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>
